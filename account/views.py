@@ -116,7 +116,7 @@ def get_user_accounts(request):
 
     return JsonResponse({
         "code": 200,
-        "message": "获取账户信息成功",
+        "message": "获取用户账户信息成功",
         "data": account_data
     })
 
@@ -195,7 +195,7 @@ def get_account_details(request):
                 "data": {
                     "accountname": account.accountname,
                     "accounttype": account.accounttype,
-                    "accountbalance": str(account.accountbalance)  # 保持余额原样返回
+                    "accountbalance": str(account.accountbalance)
                 }
             })
         except Account.DoesNotExist:

@@ -197,7 +197,12 @@ def update_budget(request):
 @csrf_exempt
 def get_user_budgets(request):
     budgets = Budget.objects.filter(account__user=request.user)
-
+    if not budgets.exists():
+        return JsonResponse({
+            "code": 404,
+            "message": "当前用户没有预算",
+            "data": {}
+        })
     budget_list = []
     for budget in budgets:
         budget_list.append({
@@ -223,7 +228,6 @@ def get_budget_detail(request):
         try:
             data = json.loads(request.body)
             budget_id = data.get('budget_id')
-            # 获取当前用户的所有账户
             accounts = Account.objects.filter(user=request.user)
             if not accounts:
                 return JsonResponse({
@@ -234,7 +238,6 @@ def get_budget_detail(request):
 
             # 获取预算的 account_id 参数
             account_id = data.get('account_id')
-            print(account_id)
             # 确保传入的 account_id 属于当前用户
             account = accounts.get(id=account_id)
             if not account:
